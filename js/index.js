@@ -9,9 +9,6 @@ function checkAuth(){
   });
 }
 window.onload = () => {
-  checkAuth();
-  view.setActiveScreen('registerScreen')
-  
   var firebaseConfig = {
     apiKey: "AIzaSyDI1xjFLKKWA9wg4RHouVlE98zAEV3zTiI",
     authDomain: "chatapp-717bc.firebaseapp.com",
@@ -22,10 +19,13 @@ window.onload = () => {
     appId: "1:174944498391:web:ddcf495eb9dee2d631f692",
     measurementId: "G-XH92YQ5M3X"
   };
-
   
   firebase.initializeApp(firebaseConfig);
   console.log(firebase.app().name)
-
+  view.setActiveScreen('registerScreen')
+  
+  checkAuth();
+  
+  
 }
 
