@@ -50,6 +50,8 @@ model.loadConversations = () =>{
     })
 }
 
+
+
 model.updateConversation = (message) => {
     const docIdUpdate = 'RPuaoDGK6aw4fVfaJb55'
     const messageToUpdate = {
