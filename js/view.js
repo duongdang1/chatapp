@@ -44,13 +44,61 @@ view.setActiveScreen = (screenName) => {
       })
 
       break
-    case 'welcomeScreen':
-      document.getElementById('app').innerHTML = components.welcomeScreen
-      document.getElementById('welcome-user').innerText = 'welcome' + model.currentUser.displayName
+    case 'chatScreen':
+      document.getElementById('app').innerHTML = components.chatScreen
+      const sendMessageForm = document.querySelector('#sendMessageForm')
+      sendMessageForm.addEventListener('submit', (e)=>{
+        e.preventDefault()
+        const message = {
+          owner: model.currentUser.email,
+          content: sendMessageForm.message.value,
+          createdAt: new Date().toISOString()
+        }
+        //const messageFromBot = {
+          //owner: 'Bot',
+          //content: sendMessageForm.message.value
+        //}
+        if(sendMessageForm.message.value.trim() !== ''){
+          view.addMessage(message)
+          
+          
+        }
+        model.updateConversation(message)
+        sendMessageForm.message.value=''
+      })
+      model.loadConversations()
       break
   }
 }
 
 view.getErrorMessage = (elementId, message) => {
   document.getElementById(elementId).innerText = message
+}
+
+view.addMessage = (message) =>{
+  const messageWrapper = document.createElement('div')
+  messageWrapper.classList.add('message')
+  //<div class='message'></div>
+  if(model.currentUser.email === message.owner){
+    messageWrapper.classList.add('mine')
+    messageWrapper.innerHTML=`
+    <div class="content">${message.content}</div>
+    `
+  }else{
+    messageWrapper.classList.add('their')
+    messageWrapper.innerHTML=`
+      <div class="owner">${message.owner}</div>
+      <div class="content">${message.content}</div>
+    `
+  }
+  const listMessage = document.querySelector('.list-message')
+  document.querySelector('.list-message').appendChild(messageWrapper)
+  listMessage.scrollTop = listMessage.scrollHeight
+  
+  
+}
+view.showCurrentConversation = () => {
+  for (let oneMessage of model.currentConversation.messages){
+    view.addMessage(oneMessage)
+  }
 }
