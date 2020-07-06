@@ -14,7 +14,7 @@ window.onload = () => {
   //templateQueryDatabase()
   firebase.auth().onAuthStateChanged((user) => {
     console.log(user)
-    if(user) {
+    if (user) {
       if (user.emailVerified) {
         model.currentUser = {
           displayName: user.displayName,
@@ -32,19 +32,19 @@ window.onload = () => {
 
 }
 
-function checkAuth(){
-  firebase.auth().onAuthStateChanged(function(user) {
+function checkAuth() {
+  firebase.auth().onAuthStateChanged(function (user) {
     console.log(user)
-    
+
     model.currentUser = {
-        
+
       displayName: user.displayName,
       email: user.email
     }
     if (user) {
-      
+
       view.setActiveScreen('welcomeScreen')
-      
+
     } else {
       // No user is signed in
       view.setActiveScreen('loginScreen')
@@ -53,51 +53,51 @@ function checkAuth(){
 }
 
 //templateQueryDatabase = () => {
-  /*const docId = 'KmYBAeKOHPFt3dom46Ks'
-  firebase.firestore().collection('chatapp').doc(docId).get().then(res =>{
-    console.log(getDataFromDoc(res))
-  }).catch(err =>{
-    console.log(err)
-  })
-  */
-  /* firebase.firestore().collection('users').where('age','==',20).get().then(res =>{
-    console.log(res)
-    //console.log(getDataFromDoc(res.docs[0]))
-    console.log(getDataFromDocs(res.docs))
-  })
-  //create
-  /*const dataToCreate = {
-    name: 'Create',
-    age: 18,
-    email: 'duongminhvietdang@gmail.com',
-    phoneNumber: ['0563038179']
-  }
-  //firebase.firestore().collection('chatapp').add(dataToCreate).then(res =>{
-    
-  //  })
-  */
-    //update
-    
-    
-    /*
-    const docIdUpdate = 'UYLVRHkAlOgX8vtgJZ2a'
-    const dataToUpdate = {
-      age: 20,
-      address:'hn',
-      phone: firebase.firestore.FieldValue.arrayUnion('123456789')
-    }
-    firebase.firestore().collection('chatapp').doc(docIdUpdate).update(dataToUpdate).then(res => {
+/*const docId = 'KmYBAeKOHPFt3dom46Ks'
+firebase.firestore().collection('chatapp').doc(docId).get().then(res =>{
+  console.log(getDataFromDoc(res))
+}).catch(err =>{
+  console.log(err)
+})
+*/
+/* firebase.firestore().collection('users').where('age','==',20).get().then(res =>{
+  console.log(res)
+  //console.log(getDataFromDoc(res.docs[0]))
+  console.log(getDataFromDocs(res.docs))
+})
+//create
+/*const dataToCreate = {
+  name: 'Create',
+  age: 18,
+  email: 'duongminhvietdang@gmail.com',
+  phoneNumber: ['0563038179']
+}
+//firebase.firestore().collection('chatapp').add(dataToCreate).then(res =>{
+  
+//  })
+*/
+//update
 
-    })
-    //delete
-    const docIdDelete = 'w82yt7sGPLcIimxl8KlX'
-    firebase.firestore().collection('chatapp').doc(docIdDelete).delete().then(res => {
 
-    })
-    */
+/*
+const docIdUpdate = 'UYLVRHkAlOgX8vtgJZ2a'
+const dataToUpdate = {
+  age: 20,
+  address:'hn',
+  phone: firebase.firestore.FieldValue.arrayUnion('123456789')
+}
+firebase.firestore().collection('chatapp').doc(docIdUpdate).update(dataToUpdate).then(res => {
+
+})
+//delete
+const docIdDelete = 'w82yt7sGPLcIimxl8KlX'
+firebase.firestore().collection('chatapp').doc(docIdDelete).delete().then(res => {
+
+})
+*/
 //}
 
-getDataFromDoc = (doc) =>{
+getDataFromDoc = (doc) => {
   const data = doc.data()
   data.id = doc.id
   return data

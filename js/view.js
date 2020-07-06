@@ -47,26 +47,24 @@ view.setActiveScreen = (screenName) => {
     case 'chatScreen':
       document.getElementById('app').innerHTML = components.chatScreen
       const sendMessageForm = document.querySelector('#sendMessageForm')
-      sendMessageForm.addEventListener('submit', (e)=>{
+      sendMessageForm.addEventListener('submit', (e) => {
         e.preventDefault()
         const message = {
           owner: model.currentUser.email,
           content: sendMessageForm.message.value,
           createdAt: new Date().toISOString()
         }
-        //const messageFromBot = {
-          //owner: 'Bot',
-          //content: sendMessageForm.message.value
-        //}
-        if(sendMessageForm.message.value.trim() !== ''){
-          view.addMessage(message)
-          
-          
+
+        if (sendMessageForm.message.value.trim() !== '') {
+          model.updateConversation(message)
+
+
         }
-        model.updateConversation(message)
-        sendMessageForm.message.value=''
+
+        sendMessageForm.message.value = ''
       })
       model.loadConversations()
+      model.listenConversationsChange()
       break
   }
 }
@@ -75,18 +73,18 @@ view.getErrorMessage = (elementId, message) => {
   document.getElementById(elementId).innerText = message
 }
 
-view.addMessage = (message) =>{
+view.addMessage = (message) => {
   const messageWrapper = document.createElement('div')
   messageWrapper.classList.add('message')
   //<div class='message'></div>
-  if(model.currentUser.email === message.owner){
+  if (model.currentUser.email === message.owner) {
     messageWrapper.classList.add('mine')
-    messageWrapper.innerHTML=`
+    messageWrapper.innerHTML = `
     <div class="content">${message.content}</div>
     `
-  }else{
+  } else {
     messageWrapper.classList.add('their')
-    messageWrapper.innerHTML=`
+    messageWrapper.innerHTML = `
       <div class="owner">${message.owner}</div>
       <div class="content">${message.content}</div>
     `
@@ -94,11 +92,11 @@ view.addMessage = (message) =>{
   const listMessage = document.querySelector('.list-message')
   document.querySelector('.list-message').appendChild(messageWrapper)
   listMessage.scrollTop = listMessage.scrollHeight
-  
-  
+
+
 }
 view.showCurrentConversation = () => {
-  for (let oneMessage of model.currentConversation.messages){
+  for (let oneMessage of model.currentConversation.messages) {
     view.addMessage(oneMessage)
   }
 }
