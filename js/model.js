@@ -42,10 +42,13 @@ model.login = (email, password) => {
 model.loadConversations = () => {
     firebase.firestore().collection(model.collectionName).get().then(res => {
         const data = utils.getDataFromDocs(res.docs)
+        model.conversations = data
+        
         if (data.length > 0) {
             model.currentConversation = data[0]
             view.showCurrentConversation()
         }
+        view.showConversations()
         console.log(data)
     })
 }
@@ -78,12 +81,19 @@ model.listenConversationsChange = () => {
             const type = oneChange.type
             const oneChangeData = utils.getDataFromDoc(oneChange.doc)
             console.log(oneChangeData)
+            if(type === 'modified'){
             if(oneChangeData.id == model.currentConversation.id){
                 model.currentConversation = oneChangeData
                 view.addMessage(oneChangeData.messages[oneChangeData.messages.length-1])
             }
+            for(let i = 0; i < model.conversations.length; i++){
+                const element = model.conversation[i]
+                if(element.id === oneChange.id){
+                    model.conversation[i] = oneChange
+                }
+            }
         }
-
+    }
     })
 }
 

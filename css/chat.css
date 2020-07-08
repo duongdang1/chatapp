@@ -1,22 +1,28 @@
 .chat-container{
-    
-    font-family:sans-serif;
-    height:100vh;
-} 
-
-.chat-header{
-    
-    background: #3a7fcf;
+    font-family: sans-serif;
+    height: calc(100vh - 64px);
+    display: flex;
+  }
+  .chat-header{
+    background: #037bfe;
     color: #ffffff;
     text-align: center;
     height: 64px;
     font-size: 24px;
     line-height: 64px;
-}
-
-.chat-container .main{
-    height: calc(100% - 64px);
-}
+  }
+  .chat-container .main{
+    height: 100%;
+    flex-grow: 1;
+  }
+  .chat-container .main .conversation-title{
+    height: 64px;
+    line-height: 64px;
+    border-bottom: 1px solid #dbdbdb;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+  }
 
 .conversation-detail .conversation-title{
     background: #ffffff;
@@ -91,3 +97,13 @@
     width: max-content;
 
 }
+.chat-container .aside-right{
+    border-right: 1px solid #dbdbdb;
+    font-size: 14px;
+  }
+  .chat-container .conversation{
+    padding: 10px;
+  }
+  .chat-container .conversation.current{
+    background: #dbdbdb;
+  }

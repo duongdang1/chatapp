@@ -90,7 +90,7 @@ view.addMessage = (message) => {
     `
   }
   const listMessage = document.querySelector('.list-message')
-  document.querySelector('.list-message').appendChild(messageWrapper)
+  listMessage.appendChild(messageWrapper)
   listMessage.scrollTop = listMessage.scrollHeight
 
 
@@ -99,4 +99,21 @@ view.showCurrentConversation = () => {
   for (let oneMessage of model.currentConversation.messages) {
     view.addMessage(oneMessage)
   }
+}
+view.showConversations = () =>{
+  for(oneConversation of model.conversations){
+    view.addConversation(oneConversation)
+  }
+}
+view.addConversation = (conversation) =>{
+  const conversationWrapper = document.createElement('div')
+  conversationWrapper.classList.add('conversation')
+  if(conversation.id === model.currentConversation.id){
+    conversationWrapper.classList.add('current')
+  }
+  conversationWrapper.innerHTML = `
+  <div class="conversation-title">${conversation.title}</div>
+  <div class="conversation-num-users">${conversation.users.length} users</div>
+  `
+  document.querySelector('.list-conversations').appendChild(conversationWrapper)
 }
