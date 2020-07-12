@@ -43,13 +43,13 @@ model.loadConversations = () => {
     firebase.firestore().collection(model.collectionName).get().then(res => {
         const data = utils.getDataFromDocs(res.docs)
         model.conversations = data
-        
+
         if (data.length > 0) {
             model.currentConversation = data[0]
             view.showCurrentConversation()
         }
         view.showConversations()
-        console.log(data)
+        //console.log(data)
     })
 }
 
@@ -64,9 +64,9 @@ model.updateConversation = (message) => {
         .collection(model.collectionName)
         .doc(model.currentConversation.id)
         .update(messageToUpdate)
-
-
 }
+
+
 
 model.listenConversationsChange = () => {
     let isFirstRun = false
@@ -81,19 +81,36 @@ model.listenConversationsChange = () => {
             const type = oneChange.type
             const oneChangeData = utils.getDataFromDoc(oneChange.doc)
             console.log(oneChangeData)
-            if(type === 'modified'){
-            if(oneChangeData.id == model.currentConversation.id){
-                model.currentConversation = oneChangeData
-                view.addMessage(oneChangeData.messages[oneChangeData.messages.length-1])
-            }
-            for(let i = 0; i < model.conversations.length; i++){
-                const element = model.conversation[i]
-                if(element.id === oneChange.id){
-                    model.conversation[i] = oneChange
+            if (type === 'modified') {
+                if (oneChangeData.id == model.currentConversation.id) {
+                    model.currentConversation = oneChangeData
+                    view.addMessage(oneChangeData.messages[oneChangeData.messages.length - 1])
                 }
+                for (let i = 0; i < model.conversations.length; i++) {
+                    const element = model.conversations[i]
+                    if (element.id === oneChangeData.id) {
+                        model.conversations[i] = oneChangeData
+                    }
+                }
+            }   else if(type === 'added'){
+                model.conversations.push(oneChangeData)
+                view.addConversation(oneChangeData)
             }
-        }
-    }
+        }   
     })
 }
+model.changeCurrentConversation = (conversationId) =>{
+    //for(conversation of model.conversation){
+    //    if(conversation.id === conversationId){
+    //        model.currentConversation = conversation
+    //    }
+    //}
+    model.currentConversation = model.conversations.filter(item => item.id === conversationId)[0]
+    view.showCurrentConversation()
+}
 
+model.createConversation = (conversation) =>{
+    firebase.firestore().collection(model.collectionName).add(conversation)
+    view.backToChatScreen()
+    
+}

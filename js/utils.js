@@ -5,5 +5,5 @@ utils.getDataFromDoc = (doc) => {
     return data
 }
 utils.getDataFromDocs = (docs) => {
-    return docs.map(getDataFromDoc)
+    return docs.map(utils.getDataFromDoc)
 }
