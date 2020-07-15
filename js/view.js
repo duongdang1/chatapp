@@ -82,6 +82,7 @@ view.setActiveScreen = (screenName) => {
         document.getElementById('app').innerHTML = components.createConversationScreen
         document.getElementById('back-to-chat').addEventListener("click", () => {
           view.backToChatScreen()
+          view.showNotify()
         })
         const createConversationForm = document.getElementById('create-conversation-form')
         createConversationForm.addEventListener('submit',()=>{
