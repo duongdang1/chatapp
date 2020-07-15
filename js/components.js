@@ -94,8 +94,10 @@ components.chatScreen = `
   <div class="list-users">
   
   </div>
+
   <form id="add-user">
-    <input class="input" autocomplete="off" type="text" name="message" placeholder="email">
+    <input class="input" autocomplete="off" type="text" name="email" placeholder="Enter friend email">
+    <div class="error" id="add-user-email-error"></div>
   </form>
   <div class="button-wrapper">
     <button class="btn" id="new-conversation">Them</button>

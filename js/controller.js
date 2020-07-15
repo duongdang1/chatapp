@@ -65,8 +65,8 @@ controller.login = ({email,password}) => {
   }
 }
 controller.createConversation = ({title,friendEmail}) => {
-  view.setErrorMessage('conversation-name-error',title ==='' ? 'Please input title':'')
-  view.setErrorMessage('conversation-email-error',friendEmail === ''? 'please input friend email':'')
+  view.getErrorMessage('conversation-name-error',title ==='' ? 'Please input title':'')
+  view.getErrorMessage('conversation-email-error',friendEmail === ''? 'please input friend email':'')
   if(title !== '' && friendEmail !== ''){
     model.createConversation({
       title,
@@ -75,5 +75,15 @@ controller.createConversation = ({title,friendEmail}) => {
       messages: []
     })
     
+  }
+}
+
+controller.addUser = (email) =>{
+  if(email === ''){
+    view.getErrorMessage('add-user-email-error','Please input email!')
+
+  }else{
+    view.getErrorMessage('add-user-email-error','')
+    model.addUser(email)
   }
 }

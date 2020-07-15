@@ -70,6 +70,12 @@ view.setActiveScreen = (screenName) => {
       })
       model.loadConversations()
       model.listenConversationsChange()
+      const addUserForm = document.querySelector('#add-user')
+      addUserForm.addEventListener('submit',(e)=>{
+        e.preventDefault()
+        controller.addUser(addUserForm.email.value)
+        addUserForm.email.value = ''
+      })
       break
     
     case 'createConversationScreen':
@@ -109,6 +115,12 @@ view.backToChatScreen = () =>{
   })
   view.showConversations()
   view.showCurrentConversation()
+  const addUserForm = document.querySelector('#add-user')
+      addUserForm.addEventListener('submit',(e)=>{
+        e.preventDefault()
+        controller.addUser(addUserForm.email.value)
+        addUserForm.email.value = ''
+      })
 }
 view.getErrorMessage = (elementId, message) => {
   document.getElementById(elementId).innerText = message
@@ -141,6 +153,8 @@ view.showCurrentConversation = () => {
   for (let oneMessage of model.currentConversation.messages) {
     view.addMessage(oneMessage)
   }
+  document.querySelector('.conversation-detail>.conversation-title').innerText = model.currentConversation.title
+  view.showCurrentConversationUsers()
 }
 view.showConversations = () =>{
   for(oneConversation of model.conversations){
@@ -150,33 +164,39 @@ view.showConversations = () =>{
 view.addConversation = (conversation) =>{
   const conversationWrapper = document.createElement('div')
   conversationWrapper.classList.add('conversation')
+  conversationWrapper.id = conversation.id
   if(conversation.id === model.currentConversation.id){
     conversationWrapper.classList.add('current')
   }
   conversationWrapper.innerHTML = `
   <div class="conversation-title">${conversation.title}</div>
   <div class="conversation-num-users">${conversation.users.length} users</div>
+  <div class="conversation-notify"></div>
   `
   conversationWrapper.addEventListener('click',()=>{
 
     document.querySelector('.current').classList.remove('current')
     conversationWrapper.classList.add('current')
     model.changeCurrentConversation(conversation.id)
-
+    conversationWrapper.lastElementChild.style = 'display: none'
   })
   document.querySelector('.list-conversations').appendChild(conversationWrapper)
   
 }
-
-view.addUser = (user)=>{
-  const userWrapper = document.createElement('div')
-  userWrapper.classList.add('user')
-  userWrapper.innerHTML = user
-  document.querySelector('.list-users').appendChild(userWrapper)
-}
 view.showCurrentConversationUsers = () =>{
   document.querySelector('.list-users').innerHTML = ``
-  for (let oneUser of model.currentConversation.users){
+  for (oneUser of model.currentConversation.users){
     view.addUser(oneUser)
   }
 }
+view.addUser = (user)=>{
+  const userWrapper = document.createElement('div')
+  userWrapper.innerText = user
+  document.querySelector('.list-users').appendChild(userWrapper)
+}
+
+view.showNotify = (conversationId) =>{
+  const conversation = document.getElementById(conversationId)
+  conversation.lastElementChild.style = 'display: block'
+}
+

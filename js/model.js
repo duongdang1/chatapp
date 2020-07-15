@@ -83,13 +83,24 @@ model.listenConversationsChange = () => {
             console.log(oneChangeData)
             if (type === 'modified') {
                 if (oneChangeData.id == model.currentConversation.id) {
+                    
+                    if(oneChangeData.users.length === model.currentConversation.users.length){
+                        view.addMessage(oneChangeData.messages[oneChangeData.messages.length - 1])
+                    }else{
+                        view.addUser(oneChangeData.users[oneChangeData.users.length-1])
+                    }
                     model.currentConversation = oneChangeData
-                    view.addMessage(oneChangeData.messages[oneChangeData.messages.length - 1])
+                    
                 }
                 for (let i = 0; i < model.conversations.length; i++) {
                     const element = model.conversations[i]
                     if (element.id === oneChangeData.id) {
                         model.conversations[i] = oneChangeData
+                        if(oneChangeData.messages[oneChangeData.messages.length-1].owner !== model.currentUser.email){
+                            view.showNotify(oneChangeData.id)
+
+                        }
+
                     }
                 }
             }   else if(type === 'added'){
@@ -107,10 +118,18 @@ model.changeCurrentConversation = (conversationId) =>{
     //}
     model.currentConversation = model.conversations.filter(item => item.id === conversationId)[0]
     view.showCurrentConversation()
+    view.showCurrentConversationUsers()
 }
 
 model.createConversation = (conversation) =>{
     firebase.firestore().collection(model.collectionName).add(conversation)
     view.backToChatScreen()
     
+}
+
+model.addUser = (email) =>{
+    const dataToUpdate = {
+        users: firebase.firestore.FieldValue.arrayUnion(email)
+    }
+    firebase.firestore().collection(model.collectionName).doc(model.currentConversation.id).update(dataToUpdate)
 }
