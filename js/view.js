@@ -76,13 +76,18 @@ view.setActiveScreen = (screenName) => {
         controller.addUser(addUserForm.email.value)
         addUserForm.email.value = ''
       })
+        document.querySelector('#sendMessageForm input').addEventListener('click', () => {
+          document.getElementById(model.currentConversation.id).lastElementChild.style = 'display: none'
+      
+      })
       break
     
     case 'createConversationScreen':
         document.getElementById('app').innerHTML = components.createConversationScreen
         document.getElementById('back-to-chat').addEventListener("click", () => {
           view.backToChatScreen()
-          view.showNotify()
+          view.showNotify(model.oneChangeData.id)
+          
         })
         const createConversationForm = document.getElementById('create-conversation-form')
         createConversationForm.addEventListener('submit',()=>{
@@ -92,6 +97,7 @@ view.setActiveScreen = (screenName) => {
             friendEmail: createConversationForm.email.value
           }
           controller.createConversation(data)
+          
         })
         break
     } 
@@ -116,6 +122,7 @@ view.backToChatScreen = () =>{
   })
   view.showConversations()
   view.showCurrentConversation()
+  
   const addUserForm = document.querySelector('#add-user')
       addUserForm.addEventListener('submit',(e)=>{
         e.preventDefault()

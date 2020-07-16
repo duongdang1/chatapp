@@ -97,6 +97,7 @@ model.listenConversationsChange = () => {
                     if (element.id === oneChangeData.id) {
                         model.conversations[i] = oneChangeData
                         if(oneChangeData.messages[oneChangeData.messages.length-1].owner !== model.currentUser.email){
+                            
                             view.showNotify(oneChangeData.id)
 
                         }
@@ -106,6 +107,7 @@ model.listenConversationsChange = () => {
             }   else if(type === 'added'){
                 model.conversations.push(oneChangeData)
                 view.addConversation(oneChangeData)
+                view.showNotify(oneChangeData.id)
             }
         }   
     })
